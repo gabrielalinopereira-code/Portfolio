@@ -1,11 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto-Portfolio</title>
+    <title>Controle de Portfólio - Turmas</title>
+    <style>
+        /* Paleta de Cores e Reset */
+        :root {
+            --marinho: #002366;
+            --royal: #4169E1;
+            --branco: #ffffff;
+            --gelo: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--gelo);
+            color: var(--marinho);
+        }
+
+        /* Layout Superior (Menu) */
+        header {
+            background: linear-gradient(135deg, var(--marinho), var(--royal));
+            color: var(--branco);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav button {
+            background-color: var(--branco);
+            color: var(--marinho);
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav button:hover {
+            background-color: var(--royal);
+            color: var(--branco);
+            transform: translateY(-3px);
+        }
+
+        nav button.active {
+            background-color: var(--royal);
+            color: var(--branco);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Área de Conteúdo */
+        main {
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .turma-container {
+            background-color: var(--branco);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: none; /* Escondido por padrão */
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            border-bottom: 3px solid var(--royal);
+            padding-bottom: 10px;
+            color: var(--marinho);
+        }
+
+        /* Grid de Alunos */
+        .alunos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .aluno-item {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .aluno-item:focus-within {
+            border-color: var(--royal);
+            box-shadow: 0 0 5px rgba(65, 105, 225, 0.3);
+        }
+
+        .aluno-item span {
+            font-weight: bold;
+            margin-right: 10px;
+            color: var(--royal);
+            min-width: 25px;
+        }
+
+        .aluno-item input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Rodapé de Ação */
+        .footer-info {
+            margin-top: 20px;
+            text-align: right;
+            font-style: italic;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+    </style>
 </head>
 <body>
-    
+
+<header>
+    <h1>Gestão de Portfólios</h1>
+    <nav>
+        <button onclick="showTurma('1A')" id="btn-1A">1° A</button>
+        <button onclick="showTurma('1B')" id="btn-1B">1° B</button>
+        <button onclick="showTurma('2A')" id="btn-2A">2° A</button>
+        <button onclick="showTurma('3A')" id="btn-3A">3° A</button>
+    </nav>
+</header>
+
+<main>
+    <div id="content-area">
+        </div>
+</main>
+
+<script>
+    // Configuração das turmas
+    const turmasConfig = [
+        { id: '1A', nome: '1° Ano A', qtd: 30 },
+        { id: '1B', nome: '1° Ano B', qtd: 28 },
+        { id: '2A', nome: '2° Ano A', qtd: 20 },
+        { id: '3A', nome: '3° Ano A', qtd: 31 }
+    ];
+
+    // Função para renderizar a turma selecionada
+    function showTurma(id) {
+        const turma = turmasConfig.find(t => t.id === id);
+        const container = document.getElementById('content-area');
+        
+        // Atualiza botões
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${id}`).classList.add('active');
+
+        // Gera o HTML da turma
+        let html = `
+            <div class="turma-container" style="display: block;">
+                <h2>Portfólio - ${turma.nome}</h2>
+                <p>Preencha os nomes abaixo. Eles são salvos automaticamente.</p>
+                <div class="alunos-grid">
+        `;
+
+        for (let i = 1; i <= turma.qtd; i++) {
+            const savedName = localStorage.getItem(`turma-${id}-aluno-${i}`) || "";
+            html += `
+                <div class="aluno-item">
+                    <span>${i}.</span>
+                    <input type="text" 
+                           placeholder="Nome do aluno" 
+                           value="${savedName}" 
+                           oninput="saveName('${id}', ${i}, this.value)">
+                </div>
+            `;
+        }
+
+        html += `
+                </div>
+                <div class="footer-info">Total: ${turma.qtd} alunos registrados.</div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+    }
+
+    // Função para salvar no LocalStorage
+    function saveName(turmaId, alunoIndex, valor) {
+        localStorage.setItem(`turma-${turmaId}-aluno-${alunoIndex}`, valor);
+    }
+
+    // Iniciar com a primeira turma
+    window.onload = () => showTurma('1A');
+</script>
+
 </body>
 </html>
