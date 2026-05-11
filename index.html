@@ -3,214 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Portfólio - Turmas</title>
+    <title>Portfólio Escolar - Controle de Turmas</title>
     <style>
-        /* Paleta de Cores e Reset */
+        /* Definição de Cores e Reset */
         :root {
-            --marinho: #002366;
-            --royal: #4169E1;
-            --branco: #ffffff;
-            --gelo: #f4f7f6;
+            --azul-marinho: #002366;
+            --azul-royal: #4169E1;
+            --branco: #FFFFFF;
+            --gelo: #F0F4F8;
+            --transicao: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: var(--gelo);
-            color: var(--marinho);
+            color: var(--azul-marinho);
+            min-height: 100vh;
         }
 
-        /* Layout Superior (Menu) */
+        /* Menu Superior */
         header {
-            background: linear-gradient(135deg, var(--marinho), var(--royal));
-            color: var(--branco);
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background-color: var(--azul-marinho);
+            padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-bottom: 4px solid var(--azul-royal);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h1 {
+            color: var(--branco);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         nav {
-            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        nav button {
-            background-color: var(--branco);
-            color: var(--marinho);
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 25px;
+        .btn-turma {
+            background-color: transparent;
+            color: var(--branco);
+            border: 2px solid var(--azul-royal);
+            padding: 10px 25px;
             cursor: pointer;
+            border-radius: 5px;
             font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: var(--transicao);
         }
 
-        nav button:hover {
-            background-color: var(--royal);
-            color: var(--branco);
+        .btn-turma:hover, .btn-turma.active {
+            background-color: var(--azul-royal);
             transform: translateY(-3px);
-        }
-
-        nav button.active {
-            background-color: var(--royal);
-            color: var(--branco);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
         /* Área de Conteúdo */
         main {
-            padding: 30px;
-            max-width: 1000px;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        .turma-container {
-            background-color: var(--branco);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        .turma-section {
             display: none; /* Escondido por padrão */
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.6s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .turma-section.active {
+            display: block;
         }
 
-        h2 {
-            border-bottom: 3px solid var(--royal);
-            padding-bottom: 10px;
-            color: var(--marinho);
+        .header-turma {
+            border-left: 10px solid var(--azul-marinho);
+            padding-left: 15px;
+            margin-bottom: 30px;
+            background: var(--branco);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
         }
 
         /* Grid de Alunos */
-        .alunos-grid {
+        .grid-alunos {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            gap: 20px;
         }
 
-        .aluno-item {
+        .card-aluno {
+            background: var(--branco);
+            padding: 15px;
+            border-radius: 8px;
+            border-bottom: 3px solid var(--azul-royal);
             display: flex;
             align-items: center;
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 8px;
-            transition: border-color 0.3s;
+            gap: 15px;
+            transition: var(--transicao);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .aluno-item:focus-within {
-            border-color: var(--royal);
-            box-shadow: 0 0 5px rgba(65, 105, 225, 0.3);
+        .card-aluno:hover {
+            transform: scale(1.03);
+            background-color: var(--azul-marinho);
+            color: var(--branco);
         }
 
-        .aluno-item span {
+        .num-chamada {
+            background: var(--azul-royal);
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.8rem;
             font-weight: bold;
-            margin-right: 10px;
-            color: var(--royal);
-            min-width: 25px;
         }
 
-        .aluno-item input {
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 14px;
-            color: #333;
+        /* Efeito de Fade */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Rodapé de Ação */
-        .footer-info {
-            margin-top: 20px;
-            text-align: right;
-            font-style: italic;
-            font-size: 0.9em;
-            color: #666;
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--azul-marinho);
+            opacity: 0.7;
         }
-
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Gestão de Portfólios</h1>
-    <nav>
-        <button onclick="showTurma('1A')" id="btn-1A">1° A</button>
-        <button onclick="showTurma('1B')" id="btn-1B">1° B</button>
-        <button onclick="showTurma('2A')" id="btn-2A">2° A</button>
-        <button onclick="showTurma('3A')" id="btn-3A">3° A</button>
-    </nav>
-</header>
-
-<main>
-    <div id="content-area">
+    <header>
+        <div class="nav-container">
+            <h1>Controle de Portfólio</h1>
+            <nav>
+                <button class="btn-turma active" onclick="mostrarTurma('1A', this)">1° A</button>
+                <button class="btn-turma" onclick="mostrarTurma('1B', this)">1° B</button>
+                <button class="btn-turma" onclick="mostrarTurma('2A', this)">2° A</button>
+                <button class="btn-turma" onclick="mostrarTurma('3A', this)">3° A</button>
+            </nav>
         </div>
-</main>
+    </header>
 
-<script>
-    // Configuração das turmas
-    const turmasConfig = [
-        { id: '1A', nome: '1° Ano A', qtd: 30 },
-        { id: '1B', nome: '1° Ano B', qtd: 28 },
-        { id: '2A', nome: '2° Ano A', qtd: 20 },
-        { id: '3A', nome: '3° Ano A', qtd: 31 }
-    ];
+    <main id="conteudo">
+        <section id="1A" class="turma-section active">
+            <div class="header-turma">
+                <h2>Turma: 1° Ano A</h2>
+                <p>Total: 34 Alunos</p>
+            </div>
+            <div class="grid-alunos" id="lista-1A"></div>
+        </section>
 
-    // Função para renderizar a turma selecionada
-    function showTurma(id) {
-        const turma = turmasConfig.find(t => t.id === id);
-        const container = document.getElementById('content-area');
-        
-        // Atualiza botões
-        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`btn-${id}`).classList.add('active');
+        <section id="1B" class="turma-section">
+            <div class="header-turma">
+                <h2>Turma: 1° Ano B</h2>
+                <p>Total: 30 Alunos</p>
+            </div>
+            <div class="grid-alunos" id="lista-1B"></div>
+        </section>
 
-        // Gera o HTML da turma
-        let html = `
-            <div class="turma-container" style="display: block;">
-                <h2>Portfólio - ${turma.nome}</h2>
-                <p>Preencha os nomes abaixo. Eles são salvos automaticamente.</p>
-                <div class="alunos-grid">
-        `;
+        <section id="2A" class="turma-section">
+            <div class="header-turma">
+                <h2>Turma: 2° Ano A</h2>
+                <p>Total: 20 Alunos</p>
+            </div>
+            <div class="grid-alunos" id="lista-2A"></div>
+        </section>
 
-        for (let i = 1; i <= turma.qtd; i++) {
-            const savedName = localStorage.getItem(`turma-${id}-aluno-${i}`) || "";
-            html += `
-                <div class="aluno-item">
-                    <span>${i}.</span>
-                    <input type="text" 
-                           placeholder="Nome do aluno" 
-                           value="${savedName}" 
-                           oninput="saveName('${id}', ${i}, this.value)">
-                </div>
-            `;
+        <section id="3A" class="turma-section">
+            <div class="header-turma">
+                <h2>Turma: 3° Ano A</h2>
+                <p>Total: 32 Alunos</p>
+            </div>
+            <div class="grid-alunos" id="lista-3A"></div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2024 - Sistema de Gerenciamento de Turmas
+    </footer>
+
+    <script>
+        // Dados dos Alunos
+        const dadosAlunos = {
+            "1A": [
+                "ADRIEL MATHEUS MARTINS GAMAS", "ANNA LUIZA GARCIA TARDIM", "BIANCA HELOISE GONÇALVES", "BRUNO SAMUELL PRIETO", 
+                "CASSIANE LETÍCIA DE OLIVEIRA DO NASCIMENTO", "FABIO NUNES TROMBINI", "GABRIEL GARCIA MACHADO", "GABRIEL HENRIQUE DOS SANTOS ARAUJO", 
+                "GABRIEL MARCELO CASTANHARI DA SILVA", "GEOVANNA COSTA DE OLIVEIRA", "GEOVANNA GABRIELLE DE ANDRADE", "GUILHERME APARECIDO DE MEDEIROS", 
+                "GUSTAVO MACIEL BRUZ DE OLIVEIRA", "THOMAS LARSSON DE SOUZA", "IASMIM LOPES AVELINO DOS SANTOS", "JÉSSICA GABRIELI MARTINS", 
+                "JOÃO PEDRO DE OLIVEIRA ALVES", "KAUÃ ALEXANDRE DE ANDRADE FERREIRA", "LEONARDO DA SILVA FERNANDES", "LINCOLN BATISTA RODRIGUES", 
+                "LOHANNA NAYARA GEDOZ BARRIOS", "LUAN HENRIQUE TASSI DE OLIVEIRA", "LUANN HENRIQUE NANTES", "MARIA EDUARDA SANTOS GODOY", 
+                "MARIA GABRIELA DO NASCIMENTO DE OLIVEIRA", "MATHEUS AUGUSTO FERREIRA DA SILVA", "MATHEUS DIAS MOYSÉS", "NICOLAS GRANUCCI BELLANÇON", 
+                "PAULO MIGUEL MATIAS DE SOUZA", "PEDRO CASSIANO RUIZ DA SILVA", "PEDRO HENRIQUE DA SILVA BEGALLI", "SOPHIA DE CASSIA DA SILVA TRINDADE", 
+                "TIAGO CARDOSO RODRIGUES", "EMILY KAUANE DE OLIVEIRA FERREIRA"
+            ],
+            "1B": [
+                "ANA BEATRIZ RODRIGUES", "ANA KAROLINA PEREIRA MIGUEL", "BENJAMIM LOPES MOREIRA DE ALMEIDA", "ENZO GABRIEL ORTIZ MUNIZ MENCK", 
+                "ÉRICK LEMES CASSITTA", "GABRIEL MELLO SILVA", "IGOR GABRIEL BISPO DA SILVA", "ISABELLA LUANA NASCIMENTO DE OLIVEIRA", 
+                "JOSÉ MARIO ROSSI DA ROSA", "JULIA BEATRIZ DE SOUZA ROCHA ROSSETTI", "JULIA NOGUEIRA DE OLIVEIRA", "KEVIN OSCAR BELIERA", 
+                "LORENA VITÓRIA DE LIMA DA SILVA", "LUCAS DA SILVA DE BARROS", "MARIA LUISA MESSI PAVANELI", "MATHEUS HUMBERTO LAUREANO GASPARINI", 
+                "MAYCON FERNANDO FIGUEIREDO JÚNIOR", "MIGUEL COELHO AMARO ANTUNES", "PABLO DANIEL MORAIS DA SILVA DE SOUSA", "RAFAEL SILVA DE OLIVEIRA JUNIOR", 
+                "RONALDY KEIVISON MARQUES FERREIRA", "SAMUEL WILLIAN DA SILVA DOS SANTOS", "STEPHANY AGATA LIMA FARIAS", "TEYLLON MATHEUS GONÇALVES BORGES", 
+                "VICTOR HUGO LIMA GUIMARÃES", "VITOR GABRIEL PEREIRA DOS SANTOS", "VÍTOR PEREIRA DA SILVA", "YAGO GABRIEL INACIO DA SILVA", 
+                "YASMIN EMANUELLA DOS SANTOS ROMUALDO", "LUCAS GABRIEL DE MENDONÇA ROSA"
+            ],
+            "2A": [
+                "ARTHUR ALVES DE OLIVEIRA PEREZ", "DAIMAR SARAY FLORES LOPEZ", "GABRIELA GROMANN LINO PEREIRA", "GABRIEL GONÇALVES PARRON ALVAREZ", 
+                "GEREMY FRANCISCO MANZOL MARIN", "HENRIQUE FERREIRA DOS REIS", "JOÃO VITOR FERREIRA ALVES", "JÚLIA BERGAMASCO DA SILVA", 
+                "LUCAS GALVÃO LEMES", "MIGUEL ANTUNES PAMPLONA", "MIGUEL BATISTA DA SILVA DURSO", "MIGUEL SANCHES DE PAULA RODRIGUES", 
+                "PABLO MIGUEL RAMOS PADILHA", "RAFAEL HENRIQUE DE AGUIAR GARCIA", "RAFAEL PEREIRA MIGUEL", "RYAN FILIPE COLANZI", 
+                "SARAH IMPERES FARIAS", "THIAGO AUGUSTO MATIAS DE SOUZA", "VITÓRIA BALBINO CRESPO", "MARIA EDUARDA SILVA DOS SANTOS"
+            ],
+            "3A": [
+                "ALIFER GABRIEL DA SILVA DELAROZA", "ANDREY SALGUEIRO", "AUGUSTO CÉSAR FERNANDES TERTO", "DAYELLENN FERNANDA DE LIMA XAVIER DE SOUZA", 
+                "ENZO GABRIEL ROSANELI ALDAVIS", "EUDSON FELIPE BARBOSA DA SILVA", "GABRIEL EDUARDO FRACHETA DE SOUZA", "HENRIQUE NEGRI ASCENCIO", 
+                "HUBERT PRADO RAMOS", "ISABELA SUSUKI HONORIO", "ISABELLA CARDOSO DOS SANTOS", "ISABELLY BEATRIZ NUNES ROSA", 
+                "ISABELLY RAMOS DOS SANTOS", "IZZAK ALVES DAVID", "JOÃO HENRIQUE HULALA BARNABÉ", "JOÃO PAULO FERREIRA DE ARAÚJO", 
+                "JOÃO PEDRO GONÇALVES DE OLIVEIRA", "KAUÃ GABRIEL MORETÃO DA SILVA", "KETHLEN CAROLINE GONÇALVES BENEDITO DA SILVA", 
+                "LARISSA DE SOUZA BARBOSA DOS SANTOS", "MARCOS MOACIR PITTA WALGER", "MARIA CLARA MOISES DE MORAES", "MARIA EDUARDA BASSANI VIANA", 
+                "MARIA RITA ALVES PEREIRA", "MIGUEL BESPALHOK DE SOUZA", "NICOLLY CAROLINE SANTOS RIBEIRO", "PÉROLA FONTANA CORCHOG", 
+                "RICARDO SUREK CORBAXO", "ROGÉRIO ALEXANDRE CARVALHO DOS SANTOS", "SUSANA CIRQUEIRA TUASCO", "VINICIUS VICTOR BENETTI LOURENÇO", 
+                "WESLEY ROBERTO AIRES ROZZI"
+            ]
+        };
+
+        // Função para carregar os alunos nos grids
+        function carregarAlunos() {
+            for (let turma in dadosAlunos) {
+                const container = document.getElementById(`lista-${turma}`);
+                dadosAlunos[turma].forEach((nome, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card-aluno';
+                    card.innerHTML = `
+                        <div class="num-chamada">${index + 1}</div>
+                        <div class="nome-aluno">${nome}</div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
         }
 
-        html += `
-                </div>
-                <div class="footer-info">Total: ${turma.qtd} alunos registrados.</div>
-            </div>
-        `;
+        // Função para trocar de turma no menu
+        function mostrarTurma(idTurma, btn) {
+            // Esconde todas as seções
+            document.querySelectorAll('.turma-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
 
-        container.innerHTML = html;
-    }
+            // Remove classe active de todos os botões
+            document.querySelectorAll('.btn-turma').forEach(b => {
+                b.classList.remove('active');
+            });
 
-    // Função para salvar no LocalStorage
-    function saveName(turmaId, alunoIndex, valor) {
-        localStorage.setItem(`turma-${turmaId}-aluno-${alunoIndex}`, valor);
-    }
+            // Mostra a seção desejada e ativa o botão
+            document.getElementById(idTurma).classList.add('active');
+            btn.classList.add('active');
 
-    // Iniciar com a primeira turma
-    window.onload = () => showTurma('1A');
-</script>
+            // Efeito de scroll suave para o topo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
+        // Inicializar a página
+        window.onload = carregarAlunos;
+    </script>
 </body>
 </html>
